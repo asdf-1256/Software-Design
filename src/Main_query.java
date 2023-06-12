@@ -1,6 +1,6 @@
 import java.sql.*;
 
-public class Main {
+public class Main_query {
     // MySQL 데이터베이스 연결 정보
     private static final String DB_URL = "jdbc:mysql://localhost:3306/login";
     private static final String USER = "newuser";
