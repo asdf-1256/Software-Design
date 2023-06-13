@@ -101,13 +101,15 @@ public class UI_Party extends JPanel{
             create_party.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    new Party_Dialog((JFrame) getTopLevelAncestor(), PARTY_CREATE);
+                    String party_name = JOptionPane.showInputDialog(null, "파티명 입력", null);
+                    System.out.println("만들기 : " + party_name);
                 }
             });
             join_party.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    new Party_Dialog((JFrame) getTopLevelAncestor(), PARTY_JOIN);
+                    String party_name = JOptionPane.showInputDialog(null, "파티명 입력", null);
+                    System.out.println("참가 : " + party_name);
                 }
             });
 
@@ -115,6 +117,7 @@ public class UI_Party extends JPanel{
             add(join_party);
         }
         //따로 dialog만들지 말고 바로 그냥 변수에 리턴시킬 수 있도록 하는 방법 찾아보기
+        /*
         private class Party_Dialog extends JDialog{
             private JTextField party_field;
 
@@ -124,9 +127,10 @@ public class UI_Party extends JPanel{
 
                 setSize(500, 500);
 
-                setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
+                JPanel panel = new JPanel(new FlowLayout());
 
-                add(party_field);
+
+                panel.add(party_field);
 
                 if(flag == PARTY_CREATE){
                     JButton create_button = new JButton("생성");
@@ -136,7 +140,7 @@ public class UI_Party extends JPanel{
                             dispose();
                         }
                     });
-                    add(create_button);
+                    panel.add(create_button);
                 }
                 else if(flag == PARTY_JOIN){
                     JButton join_button = new JButton("참가");
@@ -146,12 +150,12 @@ public class UI_Party extends JPanel{
                             dispose();
                         }
                     });
-                    add(join_button);
+                    panel.add(join_button);
                 }
-
+                add(panel);
                 setVisible(true);
             }
-        }
+        }*/
 
     }
 
