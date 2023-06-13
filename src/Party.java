@@ -63,15 +63,18 @@ public class Party {
         }
 
     }
-    private static boolean exist_party(String party_name){
+    private static void getConnection(){
         if (connection == null)
             try {
                 connection = DriverManager.getConnection(DB_URL, USER, PW);
             } catch (Exception e) {
                 e.printStackTrace();
             }
+    }
+    private static boolean exist_party(String party_name){
+        getConnection();
 
-        String query = "SELECT * INTO user WHERE party_name = ?";
+        String query = "SELECT * FROM user WHERE party_name = ?";
         ResultSet resultSet = null;
         try {
             PreparedStatement statement = connection.prepareStatement(query);
@@ -89,7 +92,8 @@ public class Party {
         }
     }
 
-    public String get_party(){
+    public static String get_party_name(){
+        getConnection();
         String id = UI_Login.getUser().getId();
 
         String query = "SELECT party_name FROM user WHERE id = ?";
@@ -110,7 +114,8 @@ public class Party {
         }
         return party_name;
     }
-    public void setDay(String day){
+    public static void setDay(String day){
+        getConnection();
         String id = UI_Login.getUser().getId();
 
         String query = "UPDATE user SET available_day = ? WHERE id = ?";
@@ -126,13 +131,14 @@ public class Party {
 
     }
 
-    public void getDay(){
+    public static void getDay(){
+        getConnection();
         member = new ArrayList<>();
         available_day = new ArrayList<>();
 
         String id = UI_Login.getUser().getId();
 
-        String party_name = get_party();
+        String party_name = get_party_name();
 
         String query = "SELECT * FROM user WHERE party_name = ?";
 
@@ -142,10 +148,8 @@ public class Party {
             statement.setString(1, party_name);
             ResultSet resultSet = statement.executeQuery();
             while(resultSet.next()){
-                if(resultSet.getString("id").equals(id))
-                    continue;
                 member.add(resultSet.getString("id"));
-                available_day.add("available_day");
+                available_day.add(resultSet.getString("available_day"));
             }
             resultSet.close();
             statement.close();

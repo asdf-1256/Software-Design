@@ -17,6 +17,7 @@ public class UI_Login extends JPanel {
     }
     public static void logout(){
         user = null;
+        isLogined = false;
     }
     public UI_Login() throws SQLException{
         setLayout(new BorderLayout());

@@ -3,63 +3,6 @@ import java.awt.event.*;
 import javax.swing.*;
 import java.util.*;
 public class UI_Party extends JPanel{
-    /*
-    private static ArrayList<Character> characters = null;
-    private static JPanel button_panel = new JPanel();
-    private static ArrayList<JButton> button_list = new ArrayList<>();
-    public UI_Party() {
-        //characters의 텍스트 파일을 읽어들여 첫 세팅하는 코드가 포함-Character 클래스에 구현?
-
-        button_panel.setLayout(new GridBagLayout());
-        JScrollPane scrollPane = new JScrollPane(button_panel);
-        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
-        scrollPane.setPreferredSize(new Dimension(900, 800));
-        JButton add_button = new JButton("+");
-        add_button.setPreferredSize(new Dimension(900,100));
-
-        add_button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                add_character();
-                button_list.remove(add_button);
-                button_list.add(add_button);
-                set_button_panel();
-            }
-        });
-        if(button_list.size() == 0)
-            button_list.add(add_button);
-        set_button_panel();
-
-
-        add(scrollPane);
-
-
-    }
-    private void add_character(){
-        JButton character_button = new JButton();
-        character_button.setLayout(new GridLayout(1, 3));
-        JLabel party_num = new JLabel("party num");
-        JLabel party_name = new JLabel("party name");
-
-        character_button.add(party_num);
-        character_button.add(party_name);
-        character_button.setPreferredSize(new Dimension(900,100));
-
-        button_list.add(character_button);
-    }
-    private void set_button_panel(){
-        button_panel.removeAll();
-        GridBagConstraints gridBagConstraints = new GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
-        for(JButton button : button_list){
-            button_panel.add(button, gridBagConstraints);
-            gridBagConstraints.gridy++;
-        }
-        button_panel.revalidate();
-        button_panel.repaint();
-    }*/
-
     public UI_Party(){
         setLayout(new FlowLayout());
         JButton logout = new JButton("로그아웃");
@@ -67,30 +10,110 @@ public class UI_Party extends JPanel{
         logout.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                UI_Login.logout();
+                UI_Main.redraw_main_panel(new UI_Character());
             }
         });
         add(logout);
+        if(Party.get_party_name() == null)
+            add(new Not_exist_party_panel());
+        else
+            add(new Exist_party_panel());
 
-        add(new Exist_party_panel());
-        add(new Not_exist_party_panel());
 
     }
     private static class Exist_party_panel extends JPanel{
         public Exist_party_panel(){
+            Party.getDay();
+            ArrayList<String> members = Party.getMember();
+            ArrayList<String> available_days = Party.getAvailable_day();
+
+            JPanel panel = new JPanel();
+
+            panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+
             JButton exit_party = new JButton("파티 나가기");
             exit_party.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-
+                    Party.exit_party();
+                    UI_Main.redraw_main_panel(new UI_Party());
                 }
             });
-            add(exit_party);
+            panel.add(exit_party);
+
+            JPanel checkbox_panel = new JPanel(new FlowLayout());
+
+            JLabel id_label = new JLabel(UI_Login.getUser().getId());
+            checkbox_panel.add(id_label);
+            int user_index = 0;
+            for(int i = 0; i < members.size(); i++)
+                if(members.get(i).equals(UI_Login.getUser().getId()))
+                    user_index = i;
+
+            JCheckBox[] days_checkbox = new JCheckBox[7];
+            String[] week = {":수", ":목", ":금", ":토", ":일", ":월", ":화"};
+            char[] user_available_day = available_days.get(user_index).toCharArray();
+            //debug
+            //System.out.println(members.get(user_index) + " : " + new String(user_available_day));
+
+            for(int i = 0; i < 7; i++){
+                days_checkbox[i] = new JCheckBox(week[i],
+                        (user_available_day[i] == '1'));
+                checkbox_panel.add(days_checkbox[i]);
+
+            }
+
+            JButton apply_button = new JButton("업로드");
+            apply_button.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    StringBuilder day = new StringBuilder(7);
+                    for(JCheckBox jCheckBox : days_checkbox){
+                        if(jCheckBox.isSelected())
+                            day.append("1");
+                        else
+                            day.append("0");
+                    }
+                    Party.setDay(day.toString());
+                    JOptionPane.showMessageDialog(null,
+                            "일정이 변경되었습니다.",
+                            "일정 변경 완료",
+                            JOptionPane.INFORMATION_MESSAGE);
+                }
+            });
+
+            checkbox_panel.add(apply_button);
+
+            panel.add(checkbox_panel);
+
+            for(int i = 0; i < members.size(); i++){
+                if(members.get(i).equals(UI_Login.getUser().getId()))
+                    continue;
+                JPanel member_info_panel = new JPanel(new FlowLayout());
+                JLabel member_id = new JLabel(members.get(i));
+                member_info_panel.add(member_id);
+
+                JCheckBox[] member_checkboxs = new JCheckBox[7];
+
+                char[] available_day = available_days.get(i).toCharArray();
+
+                //System.out.println(members.get(i) + " : " + new String(available_day));
+                for(int j = 0; j < 7; j++){
+                    member_checkboxs[j] = new JCheckBox(week[j],
+                            (available_day[j] == '1'));
+                    member_checkboxs[j].setEnabled(false);
+                    member_info_panel.add(member_checkboxs[j]);
+                }
+                panel.add(member_info_panel);
+            }
+
+
+
+            add(panel);
         }
     }
     private static class Not_exist_party_panel extends JPanel{
-        private static final int PARTY_CREATE = 0;
-        private static final int PARTY_JOIN = 0;
 
         public Not_exist_party_panel(){
             setLayout(new FlowLayout());
@@ -102,61 +125,31 @@ public class UI_Party extends JPanel{
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     String party_name = JOptionPane.showInputDialog(null, "파티명 입력", null);
-                    System.out.println("만들기 : " + party_name);
+                    if(Party.create_party(party_name) == -1)
+                        JOptionPane.showMessageDialog(null,
+                                "이미 존재하는 파티명입니다.",
+                                "error",
+                                JOptionPane.ERROR_MESSAGE);
+                    UI_Main.redraw_main_panel(new UI_Party());
                 }
             });
             join_party.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     String party_name = JOptionPane.showInputDialog(null, "파티명 입력", null);
-                    System.out.println("참가 : " + party_name);
+                    if(Party.join_party(party_name) == -1)
+                        JOptionPane.showMessageDialog(null,
+                                "존재하지 않는 파티명입니다.",
+                                "error",
+                                JOptionPane.ERROR_MESSAGE);
+                    UI_Main.redraw_main_panel(new UI_Party());
+
                 }
             });
 
             add(create_party);
             add(join_party);
         }
-        //따로 dialog만들지 말고 바로 그냥 변수에 리턴시킬 수 있도록 하는 방법 찾아보기
-        /*
-        private class Party_Dialog extends JDialog{
-            private JTextField party_field;
-
-            public Party_Dialog(JFrame parent, int flag){
-                super(parent, "파티", true);
-                party_field = new JTextField(15);
-
-                setSize(500, 500);
-
-                JPanel panel = new JPanel(new FlowLayout());
-
-
-                panel.add(party_field);
-
-                if(flag == PARTY_CREATE){
-                    JButton create_button = new JButton("생성");
-                    create_button.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            dispose();
-                        }
-                    });
-                    panel.add(create_button);
-                }
-                else if(flag == PARTY_JOIN){
-                    JButton join_button = new JButton("참가");
-                    join_button.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            dispose();
-                        }
-                    });
-                    panel.add(join_button);
-                }
-                add(panel);
-                setVisible(true);
-            }
-        }*/
-
     }
 
 }
