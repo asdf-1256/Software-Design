@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.sql.*;
 import java.util.ArrayList;
 public class Party {
@@ -29,6 +30,10 @@ public class Party {
             statement.executeUpdate();
             return 0;
         } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null,
+                    "DB 접속 에러",
+                    "DB 에러",
+                    JOptionPane.ERROR_MESSAGE);
             throw new RuntimeException(e);
         }
     }
@@ -46,6 +51,10 @@ public class Party {
             statement.executeUpdate();
             return 0;
         } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null,
+                    "DB 접속 에러",
+                    "DB 에러",
+                    JOptionPane.ERROR_MESSAGE);
             throw new RuntimeException(e);
         }
     }
@@ -59,6 +68,10 @@ public class Party {
             statement.setString(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null,
+                    "DB 접속 에러",
+                    "DB 에러",
+                    JOptionPane.ERROR_MESSAGE);
             throw new RuntimeException(e);
         }
 
@@ -68,6 +81,10 @@ public class Party {
             try {
                 connection = DriverManager.getConnection(DB_URL, USER, PW);
             } catch (Exception e) {
+                JOptionPane.showMessageDialog(null,
+                        "DB 접속 에러",
+                        "DB 에러",
+                        JOptionPane.ERROR_MESSAGE);
                 e.printStackTrace();
             }
     }
@@ -88,6 +105,10 @@ public class Party {
             }
             else return false;
         } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null,
+                    "DB 접속 에러",
+                    "DB 에러",
+                    JOptionPane.ERROR_MESSAGE);
             throw new RuntimeException(e);
         }
     }
@@ -110,6 +131,10 @@ public class Party {
                 statement.close();
             }
         } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null,
+                    "DB 접속 에러",
+                    "DB 에러",
+                    JOptionPane.ERROR_MESSAGE);
             throw new RuntimeException(e);
         }
         return party_name;
@@ -126,6 +151,10 @@ public class Party {
             statement.setString(2, id);
             statement.executeUpdate();
         } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null,
+                    "DB 접속 에러",
+                    "DB 에러",
+                    JOptionPane.ERROR_MESSAGE);
             throw new RuntimeException(e);
         }
 
@@ -154,6 +183,10 @@ public class Party {
             resultSet.close();
             statement.close();
         } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null,
+                    "DB 접속 에러",
+                    "DB 에러",
+                    JOptionPane.ERROR_MESSAGE);
             throw new RuntimeException(e);
         }
 
