@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.sql.*;
 public class Login {
     private static final String DB_URL = "jdbc:mysql://localhost:3306/login";
@@ -59,6 +60,10 @@ public class Login {
         }
         catch(Exception e){
             e.printStackTrace();
+            JOptionPane.showMessageDialog(null,
+                    "DB 접속 에러",
+                    "DB 에러",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 }

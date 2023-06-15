@@ -5,6 +5,7 @@ public class UI_Main extends JFrame {
     private static JPanel main_panel = null;
     private static JPanel button_panel = null;
     public UI_Main(){
+        setTitle("LostArk Assistant");
 
         Font font = UIManager.getFont("Label.font");
         font = font.deriveFont(20.0f);

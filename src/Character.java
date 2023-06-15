@@ -1,3 +1,4 @@
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,6 +10,8 @@ import java.nio.charset.StandardCharsets;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+
+import javax.swing.*;
 
 public class Character {
     String name;
@@ -32,7 +35,19 @@ public class Character {
             character_con.setRequestProperty("accept", "application/json");
             character_con.setRequestProperty("authorization", "bearer " + apiKey);
 
-            int responseCode = character_con.getResponseCode();
+            int responseCode = 0;
+            //인터넷 연결이 없을 경우 여기서 UnknownHostException발생
+
+            try{
+                responseCode = character_con.getResponseCode();
+            } catch (IOException e){
+                character_con.disconnect();
+                JOptionPane.showMessageDialog(null,
+                        "HTTP 연결을 맺을 수 없습니다. 인터넷 연결을 확인해주세요.",
+                        "HTTP API ERROR",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
             if(responseCode == HttpURLConnection.HTTP_OK){
                 BufferedReader in = new BufferedReader(new InputStreamReader(character_con.getInputStream()));
