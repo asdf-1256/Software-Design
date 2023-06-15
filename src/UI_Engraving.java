@@ -1,6 +1,5 @@
 import java.awt.*;
 import java.awt.event.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import javax.swing.*;
 public class UI_Engraving extends JPanel {
@@ -165,6 +164,13 @@ public class UI_Engraving extends JPanel {
 
 
         JButton calculate_button = new JButton("계산하기");
+        calculate_button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //UI의 combobox와 textfield를 인자로 전달받아야함.
+                ArrayList<Accessory> result = Engraving.calc_Engraving();
+            }
+        });
         engraving_pannel.add(calculate_button, BorderLayout.SOUTH);
 
         add(engraving_pannel);
