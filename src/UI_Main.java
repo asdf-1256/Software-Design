@@ -1,5 +1,5 @@
-import java.awt.*;
 import javax.swing.*;
+import java.awt.*;
 import java.sql.SQLException;
 public class UI_Main extends JFrame {
     private static JPanel main_panel = null;

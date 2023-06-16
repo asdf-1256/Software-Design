@@ -1,11 +1,8 @@
-import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
-import java.io.IOException;
-import java.lang.reflect.Array;
-import java.net.URL;
-import java.net.UnknownHostException;
-import java.util.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 public class UI_Character extends JPanel{
 
     private static JTextField character_name_field = new JTextField(13);
