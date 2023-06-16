@@ -1,7 +1,7 @@
 import java.util.*;
 
 public class Engraving {
-    public static ArrayList<Accessory> calc_Engraving(){
+    public static ArrayList<Accessory> getResult(){
         //UI의 combobox와 textfield를 인자로 전달받아야함.
 
         ArrayList<Accessory> return_list = new ArrayList<>(5);

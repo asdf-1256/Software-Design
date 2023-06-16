@@ -168,7 +168,7 @@ public class UI_Engraving extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //UI의 combobox와 textfield를 인자로 전달받아야함.
-                ArrayList<Accessory> result = Engraving.calc_Engraving();
+                ArrayList<Accessory> result = Engraving.getResult();
             }
         });
         engraving_pannel.add(calculate_button, BorderLayout.SOUTH);
